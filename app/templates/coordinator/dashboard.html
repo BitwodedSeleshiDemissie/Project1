@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Debug Alert (Keep for now) -->
+    <div class="alert alert-info mb-4">
+        Total Trips: {{ trips|length }}, Published: {{ trips|selectattr('status', 'equalto', 'published')|list|length }}
+    </div>
+
+    <h2 class="mb-4">Coordinator Dashboard</h2>
+
+    <!-- Profile Link -->
+    <div class="mb-4">
+        <a href="{{ url_for('coordinator_profile') }}" class="btn btn-info">
+            <i class="fas fa-user me-2"></i>My Profile
+        </a>
+    </div>
+
+    <!-- Create New Trip Button -->
+    <div class="mb-4">
+        <a href="{{ url_for('create_trip') }}" class="btn btn-success">
+            <i class="fas fa-plus me-2"></i>Create New Trip
+        </a>
+    </div>
+
+    <!-- Trip Proposals Section -->
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="fas fa-map-marked-alt me-2"></i>Your Trip Proposals</h4>
+        </div>
+        <div class="card-body">
+            {% if trips %}
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    {% for trip in trips %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ trip.destination }}</h5>
+                                <p class="card-text">{{ trip.itinerary }}</p>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar me-1"></i>
+                                        {{ trip.start_date.strftime('%b %d, %Y') }} - {{ trip.end_date.strftime('%b %d, %Y') }}
+                                    </small>
+                                </p>
+                                <p class="card-text">
+                                    <strong>Status:</strong>
+                                    <span class="badge {{ 'bg-success' if trip.status == 'published' else 'bg-secondary' }}">
+                                        {{ trip.status.capitalize() }}
+                                    </span>
+                                </p>
+                                <div class="d-grid gap-2">
+                                    {% if trip.status != 'published' %}
+                                        <a href="{{ url_for('edit_trip', id=trip.id) }}" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-edit me-2"></i>Edit
+                                        </a>
+                                    {% endif %}
+                                    {% if trip.status == 'draft' %}
+                                        <form action="{{ url_for('publish_trip', trip_id=trip.id) }}" method="POST">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn btn-warning btn-sm w-100">
+                                                <i class="fas fa-upload me-2"></i>Publish
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-warning mb-0">
+                    No trip proposals found. Start by creating a new trip!
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Inquiries Section -->
+    <div class="card shadow mt-4">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0"><i class="fas fa-question-circle me-2"></i>Inquiries</h4>
+        </div>
+        <div class="card-body">
+            {% if inquiries %}
+                <div class="list-group">
+                    {% for inquiry in inquiries %}
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ inquiry.trip.destination }}</h5>
+                            <small>
+                                <i class="fas fa-calendar me-1"></i>
+                                {{ inquiry.trip.start_date.strftime('%b %d, %Y') }} - {{ inquiry.trip.end_date.strftime('%b %d, %Y') }}
+                            </small>
+                        </div>
+                        <p class="mb-1">{{ inquiry.content }}</p>
+                        <small class="text-muted">Asked by: {{ inquiry.traveler.username if inquiry.traveler else 'Unknown' }}</small>
+                        <div class="mt-2">
+                            <a href="{{ url_for('answer_question', question_id=inquiry.id) }}" 
+                               class="btn btn-primary btn-sm">
+                                <i class="fas fa-reply me-2"></i>Answer
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-warning mb-0">
+                    No inquiries found.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

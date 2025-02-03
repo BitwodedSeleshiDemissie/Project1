@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Answer Question</h1>
+  <p><strong>Question:</strong> {{ question.content }}</p>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+      {{ form.content.label }}<br>
+      {{ form.content(rows=4) }}<br>
+      {% for error in form.content.errors %}
+        <span style="color: red;">{{ error }}</span><br>
+      {% endfor %}
+    </div>
+    <div>
+      {{ form.submit() }}
+    </div>
+  </form>
+{% endblock %}

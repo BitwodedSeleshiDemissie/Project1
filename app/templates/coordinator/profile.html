@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Coordinator Profile</h2>
+
+    <!-- Personal Information Section -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="fas fa-user me-2"></i>Personal Information</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Username:</strong> {{ coordinator.username }}</p>
+            <p><strong>Role:</strong> {{ coordinator.role }}</p>
+        </div>
+    </div>
+
+    <!-- Draft Trips Section -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-warning text-white">
+            <h4 class="mb-0"><i class="fas fa-edit me-2"></i>Draft Trips</h4>
+        </div>
+        <div class="card-body">
+            {% if draft_trips %}
+                <div class="list-group">
+                    {% for trip in draft_trips %}
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ trip.destination }}</h5>
+                            <small>
+                                <i class="fas fa-calendar me-1"></i>
+                                {{ trip.start_date.strftime('%b %d, %Y') }} - {{ trip.end_date.strftime('%b %d, %Y') }}
+                            </small>
+                        </div>
+                        <p class="mb-1">{{ trip.description }}</p>
+                        <a href="{{ url_for('edit_trip', id=trip.id) }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-edit me-2"></i>Edit
+                        </a>
+                        <form action="{{ url_for('delete_trip', trip_id=trip.id) }}" method="POST" class="d-inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash me-2"></i>Delete
+                            </button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info mb-0">
+                    No draft trips found.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+        <!-- Published Trips Section -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0"><i class="fas fa-check-circle me-2"></i>Published Trips</h4>
+        </div>
+        <div class="card-body">
+            {% if published_trips %}
+                <div class="list-group">
+                    {% for trip in published_trips %}
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ trip.destination }}</h5>
+                            <small>
+                                <i class="fas fa-calendar me-1"></i>
+                                {{ trip.start_date.strftime('%b %d, %Y') }} - {{ trip.end_date.strftime('%b %d, %Y') }}
+                            </small>
+                        </div>
+                        <p class="mb-1">{{ trip.description }}</p>
+                        <p class="mb-1">
+                            <strong>Participants:</strong> {{ trip.participants|length }} / {{ trip.max_participants }}
+                        </p>
+                        <!-- Show Participants List -->
+                        {% if trip.participants %}
+                            <div class="mt-2">
+                                <strong>Registered Participants:</strong>
+                                <ul>
+                                    {% for participant in trip.participants %}
+                                    <li>{{ participant.traveler.username }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% else %}
+                            <div class="mt-2">
+                                <small class="text-muted">No participants yet.</small>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info mb-0">
+                    No published trips found.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-plus-circle me-2"></i>
+                {% if is_edit %}
+                    Edit Trip: {{ trip.destination }}
+                {% else %}
+                    Create New Trip
+                {% endif %}
+            </h4>
+        </div>
+        <div class="card-body">
+            <!-- Display any form validation errors -->
+            {% for field, errors in form.errors.items() %}
+                <div class="alert alert-danger">
+                    <strong>{{ field.label }}:</strong>
+                    {% for error in errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <!-- Form starts here -->
+            <form method="POST" action="{% if is_edit %}{{ url_for('edit_trip', id=trip.id) }}{% else %}{{ url_for('create_trip') }}{% endif %}" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+
+                <!-- Add hidden field for trip ID when editing -->
+                {% if is_edit %}
+                    {{ form.id() }}
+                {% endif %}
+
+                <!-- Destination Field -->
+                <div class="mb-3">
+                    {{ form.destination.label(class="form-label") }}
+                    {{ form.destination(class="form-control") }}
+                </div>
+
+                <!-- Start Date Field -->
+                <div class="mb-3">
+                    {{ form.start_date.label(class="form-label") }}
+                    {{ form.start_date(class="form-control", type="date", style="cursor: pointer;") }}
+                </div>
+
+                <!-- End Date Field -->
+                <div class="mb-3">
+                    {{ form.end_date.label(class="form-label") }}
+                    {{ form.end_date(class="form-control", type="date", style="cursor: pointer;") }}
+                </div>
+
+                <!-- Max Participants Field -->
+                <div class="mb-3">
+                    {{ form.max_participants.label(class="form-label") }}
+                    {{ form.max_participants(class="form-control") }}
+                </div>
+
+                <!-- Itinerary Field -->
+                <div class="mb-3">
+                    {{ form.itinerary.label(class="form-label") }}
+                    {{ form.itinerary(class="form-control") }}
+                </div>
+                <!-- Add these fields below the Itinerary Field -->
+                <!-- Transportation Budget Field -->
+                <div class="mb-3">
+                    {{ form.transportation_budget.label(class="form-label") }}
+                    {{ form.transportation_budget(class="form-control") }}
+                </div>
+
+                <!-- Accommodation Budget Field -->
+                <div class="mb-3">
+                    {{ form.accommodation_budget.label(class="form-label") }}
+                    {{ form.accommodation_budget(class="form-control") }}
+                </div>
+
+                <!-- Activities Budget Field -->
+                <div class="mb-3">
+                    {{ form.activities_budget.label(class="form-label") }}
+                    {{ form.activities_budget(class="form-control") }}
+                </div>
+
+                <!-- Submit Buttons -->
+                <div class="d-grid gap-2">
+                    {{ form.submit(class="btn btn-primary") }}
+                    {% if is_edit %}
+                        <button type="submit" name="publish" class="btn btn-success">
+                            <i class="fas fa-upload me-2"></i>Publish
+                        </button>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

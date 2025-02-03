@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YesTravel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleshome.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="YesTravel Logo">
+        </div>
+        <div class="login-btn">
+            <!-- Inside index.html -->
+            <a href="{{ url_for('login') }}" class="login-button">Login</a>
+        </div>
+        <div class="container">
+            <h1>Welcome to YesTravel</h1>
+            <p>Discover the world with us. We offer the best travel experiences.</p>
+        </div>
+    </header>
+
+    <section id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="{{ url_for('static', filename='img/image3.jpg') }}" alt="Group Travelers">
+                </div>
+                <div class="about-text">
+                    <h2>About Us</h2>
+                    <p>
+                        At YesTravel, we believe that every journey begins with a simple "yes." Yes to new experiences, yes to unforgettable adventures, and yes to discovering the world on your terms. Whether you're craving a spontaneous weekend getaway, a cultural deep dive, or a once-in-a-lifetime escape, we're here to make it happen—effortlessly.
+                    </p>
+                    <p>
+                        Our team of passionate travelers and experts curate the best destinations, exclusive deals, and seamless travel experiences so you can explore stress-free. From personalized itineraries to insider tips, we handle the details while you focus on making memories.
+                    </p>
+                    <div class="about-highlights">
+                        <div class="highlight-card">
+                            <i class="fas fa-globe"></i>
+                            <h3>Global Destinations</h3>
+                            <p>Explore the world with our curated list of top destinations.</p>
+                        </div>
+                        <div class="highlight-card">
+                            <i class="fas fa-suitcase"></i>
+                            <h3>Tailored Packages</h3>
+                            <p>Customized travel plans to suit your preferences.</p>
+                        </div>
+                        <div class="highlight-card">
+                            <i class="fas fa-headset"></i>
+                            <h3>24/7 Support</h3>
+                            <p>We're here for you, anytime, anywhere.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 YesTravel. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function scrollListings(direction) {
+            const container = document.querySelector('.listings-container');
+            const scrollAmount = 300;
+            container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

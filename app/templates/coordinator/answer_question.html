@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Answer Question</h2>
+    <div class="card shadow">
+        <div class="card-body">
+            <p><strong>Trip:</strong> {{ question.trip.destination }}</p>
+            <p><strong>Question:</strong> {{ question.content }}</p>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.content.label(class="form-label") }}
+                    {{ form.content(class="form-control") }}
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-reply me-2"></i>Submit Answer
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
