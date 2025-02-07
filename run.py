@@ -1,28 +1,25 @@
-from flask import render_template, redirect, url_for, flash, request
-from flask_login import login_user, logout_user, login_required, current_user
+from flask import Flask, render_template, redirect, url_for, flash, request
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from flask_wtf import FlaskForm
+from flask_wtf.csrf import CSRFProtect
 from werkzeug.security import generate_password_hash, check_password_hash
-
-
-from datetime import datetime
-from datetime import timezone
+from wtforms import (StringField, PasswordField, DateField, IntegerField, TextAreaField, 
+                     SelectField, SubmitField)
+from wtforms.validators import DataRequired, Length, EqualTo, Optional, ValidationError
+from datetime import datetime, timezone
 from sqlalchemy.sql import func
-from sqlalchemy import func 
-
-
-
-
 def init_app(app):
     @app.route('/')
     def home():
         print(f"User authenticated: {current_user.is_authenticated}")  # Debug
         if current_user.is_authenticated:
-            print(f"User role: {current_user.role}")  # Debug
-            # Use the ROUTE FUNCTION NAMES, not template paths!
+            print(f"User role: {current_user.role}")  
             if current_user.role == 'coordinator':
                 return redirect(url_for('coordinator_dashboard'))
             else:
                 return redirect(url_for('traveler_dashboard'))
-        return render_template('index.html')  # This line changed from redirect
+        return render_template('index.html')  
     @app.route('/login', methods=['GET', 'POST'])
     def login():
         form = LoginForm()
@@ -73,20 +70,6 @@ def init_app(app):
         ).all()
         
         return render_template('coordinator/dashboard.html', trips=trips, inquiries=inquiries)
-
-    # app.py
-from flask import Flask, render_template, redirect, url_for, flash, request
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from flask_wtf import FlaskForm
-from flask_wtf.csrf import CSRFProtect
-from werkzeug.security import generate_password_hash, check_password_hash
-from wtforms import (StringField, PasswordField, DateField, IntegerField, TextAreaField, 
-                     SelectField, SubmitField)
-from wtforms.validators import DataRequired, Length, EqualTo, Optional, ValidationError
-from datetime import datetime
-from sqlalchemy.sql import func
-
 # Initialize Flask app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -362,17 +345,16 @@ def book_trip(trip_id):
         # Check if the trip is upcoming and has available slots
         if not trip.is_upcoming():
             flash('You cannot book a trip that has already occurred.', 'danger')
-            return redirect(url_for('home'))  # Adjust 'home' as per your route name
+            return redirect(url_for('home'))  
 
         if not trip.has_available_slots():
             flash('This trip is fully booked.', 'danger')
-            return redirect(url_for('home'))  # Adjust 'home' as per your route name
+            return redirect(url_for('home'))
 
         # Check for conflicting bookings
         if trip.is_conflicting_with_existing_bookings(current_user.id):
             flash('You already have a booking that conflicts with this trip.', 'danger')
-            return redirect(url_for('home'))  # Adjust 'home' as per your route name
-
+            return redirect(url_for('home'))  
         form = BookingForm()
 
         if form.validate_on_submit():
@@ -381,8 +363,7 @@ def book_trip(trip_id):
             db.session.add(booking)
             db.session.commit()
             flash('You have successfully booked the trip!', 'success')
-            return redirect(url_for('home'))  # Adjust 'home' as per your route name
-
+            return redirect(url_for('home'))  
         return render_template('traveler/book_trip.html', form=form, trip=trip)
 
 @app.route('/traveler/trip/<int:trip_id>/ask', methods=['GET', 'POST'])

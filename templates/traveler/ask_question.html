@@ -8,7 +8,7 @@
                 {{ form.hidden_tag() }}
                 <div class="mb-3">
                     {{ form.content.label(class="form-label") }}
-                    {{ form.content(class="form-control") }}
+                    {{ form.content(class="form-control", required="required", placeholder="Type your question here") }}
                 </div>
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-paper-plane me-2"></i>Submit Question

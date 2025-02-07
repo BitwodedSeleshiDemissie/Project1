@@ -36,49 +36,49 @@
                 <!-- Destination Field -->
                 <div class="mb-3">
                     {{ form.destination.label(class="form-label") }}
-                    {{ form.destination(class="form-control") }}
+                    {{ form.destination(class="form-control", required="required") }}
                 </div>
 
                 <!-- Start Date Field -->
                 <div class="mb-3">
                     {{ form.start_date.label(class="form-label") }}
-                    {{ form.start_date(class="form-control", type="date", style="cursor: pointer;") }}
+                    {{ form.start_date(class="form-control", type="date", style="cursor: pointer;", required="required") }}
                 </div>
 
                 <!-- End Date Field -->
                 <div class="mb-3">
                     {{ form.end_date.label(class="form-label") }}
-                    {{ form.end_date(class="form-control", type="date", style="cursor: pointer;") }}
+                    {{ form.end_date(class="form-control", type="date", style="cursor: pointer;", required="required") }}
                 </div>
 
                 <!-- Max Participants Field -->
                 <div class="mb-3">
                     {{ form.max_participants.label(class="form-label") }}
-                    {{ form.max_participants(class="form-control") }}
+                    {{ form.max_participants(class="form-control", required="required") }}
                 </div>
 
                 <!-- Itinerary Field -->
                 <div class="mb-3">
                     {{ form.itinerary.label(class="form-label") }}
-                    {{ form.itinerary(class="form-control") }}
+                    {{ form.itinerary(class="form-control", required="required") }}
                 </div>
-                <!-- Add these fields below the Itinerary Field -->
+
                 <!-- Transportation Budget Field -->
                 <div class="mb-3">
                     {{ form.transportation_budget.label(class="form-label") }}
-                    {{ form.transportation_budget(class="form-control") }}
+                    {{ form.transportation_budget(class="form-control", required="required") }}
                 </div>
 
                 <!-- Accommodation Budget Field -->
                 <div class="mb-3">
                     {{ form.accommodation_budget.label(class="form-label") }}
-                    {{ form.accommodation_budget(class="form-control") }}
+                    {{ form.accommodation_budget(class="form-control", required="required") }}
                 </div>
 
                 <!-- Activities Budget Field -->
                 <div class="mb-3">
                     {{ form.activities_budget.label(class="form-label") }}
-                    {{ form.activities_budget(class="form-control") }}
+                    {{ form.activities_budget(class="form-control", required="required") }}
                 </div>
 
                 <!-- Submit Buttons -->

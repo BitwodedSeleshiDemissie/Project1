@@ -8,19 +8,19 @@
             {{ form.hidden_tag() }}
             <div class="mb-3">
                 {{ form.username.label(class="form-label") }}
-                {{ form.username(class="form-control") }}
+                {{ form.username(class="form-control", required="required", placeholder="Enter username") }}
             </div>
             <div class="mb-3">
                 {{ form.password.label(class="form-label") }}
-                {{ form.password(class="form-control") }}
+                {{ form.password(class="form-control", required="required", placeholder="Enter password") }}
             </div>
             <div class="mb-3">
                 {{ form.confirm_password.label(class="form-label") }}
-                {{ form.confirm_password(class="form-control") }}
+                {{ form.confirm_password(class="form-control", required="required", placeholder="Confirm password") }}
             </div>
             <div class="mb-3">
                 {{ form.role.label(class="form-label") }}
-                {{ form.role(class="form-select") }}
+                {{ form.role(class="form-select", required="required") }}
             </div>
             <div class="mb-3">
                 {{ form.submit(class="btn btn-primary w-100") }}
